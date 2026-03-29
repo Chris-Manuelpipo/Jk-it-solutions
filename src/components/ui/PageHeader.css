@@ -1,0 +1,51 @@
+.page-header {
+  position: relative;
+  background: url('https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?w=1400&q=70') center/cover;
+  padding: 6rem 0 4rem;
+  overflow: hidden;
+  margin-top: 0;
+}
+.page-header-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(10,40,20,0.92) 0%, rgba(26,122,60,0.75) 100%);
+}
+.page-header-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  color: white;
+}
+.page-header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(57,212,106,0.15);
+  border: 1px solid rgba(57,212,106,0.3);
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.35rem 1rem;
+  border-radius: 50px;
+  margin-bottom: 1rem;
+}
+.page-header-content h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: white;
+  margin-bottom: 0.75rem;
+}
+.page-header-content p {
+  color: rgba(255,255,255,0.75);
+  max-width: 560px;
+  margin: 0 auto 1.5rem;
+  font-size: 0.95rem;
+}
+.breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.55);
+}
+.breadcrumb i { font-size: 0.65rem; }
+.breadcrumb .active { color: var(--accent); font-weight: 600; }

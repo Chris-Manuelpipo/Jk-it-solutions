@@ -1,0 +1,100 @@
+.formations-preview-section { background: var(--light); }
+
+.formations-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.formation-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  animation: fadeInUp 0.6s ease both;
+}
+.formation-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+}
+
+.formation-img-wrap {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+.formation-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: var(--transition);
+}
+.formation-card:hover .formation-img-wrap img { transform: scale(1.06); }
+
+.formation-level {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.3rem 0.75rem;
+  border-radius: 50px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.formation-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+}
+.formation-body h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--dark);
+  line-height: 1.35;
+}
+.formation-body p {
+  font-size: 0.85rem;
+  color: var(--gray);
+  line-height: 1.65;
+  flex: 1;
+}
+
+.formation-meta {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.formation-meta span {
+  font-size: 0.8rem;
+  color: var(--gray);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.formation-meta i { color: var(--primary); }
+
+.formation-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--gray-light);
+  margin-top: auto;
+}
+.formation-price {
+  font-family: var(--font-head);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+@media (max-width: 1024px) { .formations-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .formations-grid { grid-template-columns: 1fr; } }
