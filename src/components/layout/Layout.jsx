@@ -3,11 +3,13 @@ import { useEffect, useState } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import { useCMS } from '../../context/CMSContext';
+// src/components/layout/Layout.jsx
 
 export default function Layout() {
   const [showTop, setShowTop] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const { isAdmin } = useCMS();
+  const { loading: cmsLoading, isAdmin } = useCMS();
+  const [localLoading, setLocalLoading] = useState(true);
+  const loading = cmsLoading || localLoading;
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -15,7 +17,7 @@ export default function Layout() {
   }, [pathname]);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 600);
+    const timer = setTimeout(() => setLocalLoading(false), 800);
     return () => clearTimeout(timer);
   }, []);
 
