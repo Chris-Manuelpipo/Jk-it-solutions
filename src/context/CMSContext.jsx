@@ -94,77 +94,66 @@ const defaultContent = {
     slogan:      "Innovation · Expertise · Excellence",
     logo: null,
   },
+  team: [
+    { id: 1, name: "Juslin Kutche", role: "Fondateur & CEO", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&q=80", linkedin: "" },
+    { id: 2, name: "Sandrine Mbida", role: "Responsable Cybersécurité", image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=300&q=80", linkedin: "" },
+    { id: 3, name: "Arnaud Foto", role: "Ingénieur IoT", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&q=80", linkedin: "" },
+    { id: 4, name: "Carine Nguema", role: "Formatrice Certifiée", image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=300&q=80", linkedin: "" },
+  ],
 };
 
 // ─── Transformateurs Strapi → format des composants ───────────
 const toSlide = (item) => ({
-  id: item.id,
+  id: item.id, documentId: item.documentId,
   title:    item.title,
   subtitle: item.subtitle,
-  image:    resolveImage(item) || '',
+  image:    resolveImage(item) || item.image_url || '',
   cta1: { text: item.cta1_text || 'Voir plus',     link: item.cta1_link || '/services' },
   cta2: { text: item.cta2_text || 'Devis Gratuit', link: item.cta2_link || '/contact'  },
 });
 
 const toService = (item) => ({
-  id:          item.id,
-  icon:        item.icon || 'fa-shield-halved',
-  title:       item.title,
-  description: item.description,
-  active:      item.active !== false,
+  id: item.id, documentId: item.documentId,
+  icon: item.icon || 'fa-shield-halved', title: item.title, description: item.description, active: item.active !== false,
 });
 
 const toFormation = (item) => ({
-  id:          item.id,
-  title:       item.title,
-  description: item.description,
-  duration:    item.duration || '',
-  price:       item.price    || '',
-  date:        item.date     || '',
-  level:       item.level    || 'Débutant',
-  image:       resolveImage(item) || '',
+  id: item.id, documentId: item.documentId,
+  title: item.title, description: item.description, duration: item.duration || '',
+  price: item.price || '', date: item.date || '', level: item.level || 'Débutant',
+  image: resolveImage(item) || item.image_url || '',
 });
 
 const toPack = (item) => ({
-  id:            item.id,
-  title:         item.title,
-  badge:         item.badge    || '',
-  featured:      item.featured || false,
-  items:         item.items    || [],
+  id: item.id, documentId: item.documentId,
+  title: item.title, badge: item.badge || '', featured: item.featured || false, items: item.items || [],
   originalPrice: item.original_price ?? item.originalPrice ?? 0,
-  promoPrice:    item.promo_price    ?? item.promoPrice    ?? 0,
-  currency:      item.currency || 'FCFA',
-  expiresAt:     item.expires_at || item.expiresAt || '',
-  cta:           item.cta      || 'Commander',
-  active:        item.active !== false,
+  promoPrice: item.promo_price ?? item.promoPrice ?? 0,
+  currency: item.currency || 'FCFA', expiresAt: item.expires_at || item.expiresAt || '',
+  cta: item.cta || 'Commander', active: item.active !== false,
 });
 
 const toProject = (item) => ({
-  id:          item.id,
-  title:       item.title,
-  description: item.description,
-  category:    item.category  || 'Autre',
-  client:      item.client    || '',
-  progress:    item.progress  ?? 100,
-  status:      item.status    || 'Terminé',
-  image:       resolveImage(item) || '',
-  startDate:   item.start_date || item.startDate || '',
-  endDate:     item.end_date   || item.endDate   || '',
+  id: item.id, documentId: item.documentId,
+  title: item.title, description: item.description, category: item.category || 'Autre',
+  client: item.client || '', progress: item.progress ?? 100,
+  status: item.statuse || 'Terminé',
+  image: resolveImage(item) || item.image_url || '',
+  startDate: item.start_date || item.startDate || '',
+  endDate: item.end_date || item.endDate || '',
 });
 
 const toTestimonial = (item) => ({
-  id:     item.id,
-  name:   item.name,
-  role:   item.role,
-  text:   item.text,
-  avatar: resolveImage(item) || item.avatar || '',
+  id: item.id, documentId: item.documentId,
+  name: item.name, role: item.role, text: item.text,
+  avatar: resolveImage(item) || item.avatar_url || '',
   rating: item.rating || 5,
 });
 
 const toAbout = (item) => ({
-  title: item.title || '',
-  text:  item.text  || '',
-  image: resolveImage(item) || '',
+  id: item.id, documentId: item.documentId,
+  title: item.title || '', text: item.text || '',
+  image: resolveImage(item) || item.image_url || '',
   stats: [
     { label: "Clients Satisfaits",   value: item.stat_clients  || 0 },
     { label: "Projets Réalisés",     value: item.stat_projects || 0 },
@@ -174,72 +163,98 @@ const toAbout = (item) => ({
 });
 
 const toContact = (item) => ({
-  address:   item.address  || '',
-  email:     item.email    || '',
-  phone:     item.phone    || '',
-  whatsapp:  item.whatsapp || '',
-  hours:     item.hours    || '',
-  facebook:  item.facebook || '',
-  linkedin:  item.linkedin || '',
-  tiktok:    item.tiktok   || '',
-  instagram: item.instagram || '',
+  id: item.id, documentId: item.documentId,
+  address: item.address || '', email: item.email || '', phone: item.phone || '',
+  whatsapp: item.whatsapp || '', hours: item.hours || '',
+  facebook: item.facebook || '', linkedin: item.linkedin || '',
+  tiktok: item.tiktok || '', instagram: item.instagram || '',
 });
 
 const toSiteConfig = (item) => ({
+  id: item.id, documentId: item.documentId,
   companyName: item.company_name || 'JK IT Solutions',
-  slogan:      item.slogan       || '',
-  logo:        resolveImage(item) || null,
+  slogan: item.slogan || '', logo: resolveImage(item) || null,
+});
+
+const toTeamMember = (item) => ({
+  id: item.id, documentId: item.documentId,
+  name: item.name, role: item.role,
+  image: resolveImage(item) || item.image_url || '',
+  linkedin: item.linkedin || '', facebook: item.facebook || '', whatsapp: item.whatsapp || '',
 });
 
 // ─── Fetch complet depuis Strapi ──────────────────────────────
 async function fetchAllFromStrapi() {
   const [
     heroSlides, services, formations, packs,
-    projects, testimonials, about, contactInfo, siteConfig,
+    projects, testimonials, about, contactInfo, siteConfig, team,
   ] = await Promise.all([
-    fetchStrapi('hero-slides?sort=order:asc&filters[active][$eq]=true&populate=image_file'),
-    fetchStrapi('services?sort=order:asc&filters[active][$eq]=true'),
-    fetchStrapi('formations?sort=order:asc&populate=image_file'),
-    fetchStrapi('packs?sort=order:asc&filters[active][$eq]=true'),
-    fetchStrapi('projects?sort=order:asc&populate=image_file'),
-    fetchStrapi('testimonials?sort=order:asc&populate=avatar_file'),
-    fetchStrapi('abouts?populate=image_file'),
-    fetchStrapi('contact-infos'),
-    fetchStrapi('site-configs?populate=logo_file'),
+    fetchStrapi('hero-slides?sort[0]=order:asc&filters[active][$eq]=true&populate=*'),
+    fetchStrapi('services?sort[0]=order:asc&filters[active][$eq]=true&populate=*'),
+    fetchStrapi('formations?sort[0]=order:asc&populate=*'),
+    fetchStrapi('packs?sort[0]=order:asc&filters[active][$eq]=true&populate=*'),
+    fetchStrapi('projects?sort[0]=order:asc&populate=*'),
+    fetchStrapi('testimonials?sort[0]=order:asc&populate=*'),
+    fetchStrapi('abouts?populate=*'),
+    fetchStrapi('contact-info?populate=*'),
+    fetchStrapi('site-config?populate=*'),
+    fetchStrapi('team-members?sort[0]=order:asc&populate=*'),
   ]);
 
+  // Helper pour extraire les données (handle both array and single type responses)
+  const extract = (data) => {
+    if (!data) return null;
+    if (Array.isArray(data)) return data;
+    if (data.data) return Array.isArray(data.data) ? data.data : [data.data];
+    return [data];
+  };
+
+  const heroData = extract(heroSlides);
+  const servicesData = extract(services);
+  const formationsData = extract(formations);
+  const packsData = extract(packs);
+  const projectsData = extract(projects);
+  const testimonialsData = extract(testimonials);
+  const aboutData = extract(about);
+  const teamData = extract(team);
+
+  // Single types (no array)
+  const contactRaw = contactInfo?.data || contactInfo;
+  const siteConfigRaw = siteConfig?.data || siteConfig;
+
   return {
-    hero: { 
-      slides: (heroSlides && heroSlides.length > 0) 
-        ? heroSlides.map(toSlide) 
-        : defaultContent.hero.slides 
+    hero: {
+      slides: (heroData && heroData.length > 0)
+        ? heroData.map(toSlide)
+        : defaultContent.hero.slides
     },
-    services: (services && services.length > 0) 
-      ? services.map(toService) 
+    services: (servicesData && servicesData.length > 0)
+      ? servicesData.map(toService)
       : defaultContent.services,
-    formations: (formations && formations.length > 0) 
-      ? formations.map(toFormation) 
+    formations: (formationsData && formationsData.length > 0)
+      ? formationsData.map(toFormation)
       : defaultContent.formations,
-    packs: (packs && packs.length > 0) 
-      ? packs.map(toPack) 
+    packs: (packsData && packsData.length > 0)
+      ? packsData.map(toPack)
       : defaultContent.packs,
-    projects: (projects && projects.length > 0) 
-      ? projects.map(toProject) 
+    projects: (projectsData && projectsData.length > 0)
+      ? projectsData.map(toProject)
       : defaultContent.projects,
-    testimonials: (testimonials && testimonials.length > 0) 
-      ? testimonials.map(toTestimonial) 
+    testimonials: (testimonialsData && testimonialsData.length > 0)
+      ? testimonialsData.map(toTestimonial)
       : defaultContent.testimonials,
-    about: (about && about.length > 0) 
-      ? toAbout(about[0]) 
+    about: (aboutData && aboutData.length > 0)
+      ? toAbout(aboutData[0])
       : defaultContent.about,
-    contact: (contactInfo && contactInfo.length > 0) 
-      ? toContact(contactInfo[0]) 
+    contact: contactRaw
+      ? toContact(contactRaw)
       : defaultContent.contact,
-    siteConfig: (siteConfig && siteConfig.length > 0) 
-      ? toSiteConfig(siteConfig[0]) 
+    siteConfig: siteConfigRaw
+      ? toSiteConfig(siteConfigRaw)
       : defaultContent.siteConfig,
-    // team non géré par Strapi pour l'instant → fallback
-    team: defaultContent.team || [],
+    team: (teamData && teamData.length > 0)
+      ? teamData.map(toTeamMember)
+      : defaultContent.team,
   };
 }
 
@@ -250,7 +265,17 @@ export function CMSProvider({ children }) {
   const [content, setContent]     = useState(defaultContent);
   const [isAdmin, setIsAdmin]     = useState(false);
   const [loading, setLoading]     = useState(true);
-  const [strapiOk, setStrapiOk]   = useState(false);  // Strapi connecté ?
+  const [strapiOk, setStrapiOk]   = useState(false);
+
+  const refreshContent = async () => {
+    try {
+      const strapiData = await fetchAllFromStrapi();
+      setContent(strapiData);
+      setStrapiOk(true);
+    } catch (err) {
+      console.warn('Erreur refresh:', err.message);
+    }
+  };
 
   useEffect(() => {
     async function load() {
@@ -259,7 +284,6 @@ export function CMSProvider({ children }) {
         setContent(strapiData);
         setStrapiOk(true);
       } catch (err) {
-        // Strapi indisponible → on garde defaultContent
         console.warn('Strapi indisponible, utilisation des données par défaut.', err.message);
         setStrapiOk(false);
       } finally {
@@ -269,7 +293,6 @@ export function CMSProvider({ children }) {
     load();
   }, []);
 
-  // updateContent reste disponible pour le back-office local (localStorage)
   const updateContent = (section, data) =>
     setContent(prev => ({ ...prev, [section]: data }));
 
@@ -284,6 +307,7 @@ export function CMSProvider({ children }) {
       isAdmin, setIsAdmin,
       updateContent,
       updateNestedContent,
+      refreshContent,
       defaultContent,
     }}>
       {children}

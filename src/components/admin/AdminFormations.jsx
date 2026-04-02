@@ -1,43 +1,59 @@
 import { useState } from 'react';
 import { useCMS } from '../../context/CMSContext';
+import { createFormation, updateFormation, deleteFormation } from '../../api/strapiAdmin';
 
-const emptyFormation = {
-  id: null, title: '', description: '', duration: '', price: '', date: '',
-  image: '', level: 'Débutant'
-};
+const emptyFormation = { id: null, strapiId: null, title: '', description: '', duration: '', price: '', date: '', image: '', imageFile: null, level: 'Débutant' };
 const levelColor = { 'Débutant': '#22c55e', 'Intermédiaire': '#f59e0b', 'Avancé': '#ef4444' };
 
 export default function AdminFormations({ onSave }) {
-  const { content, updateContent } = useCMS();
+  const { content, refreshContent } = useCMS();
   const [formations, setFormations] = useState(JSON.parse(JSON.stringify(content.formations)));
-  const [editing, setEditing] = useState(null); // null = list, id = edit form
+  const [editing, setEditing] = useState(null);
   const [form, setForm] = useState(emptyFormation);
+  const [saving, setSaving] = useState(false);
 
   const openNew = () => { setForm({ ...emptyFormation, id: Date.now() }); setEditing('new'); };
-  const openEdit = (f) => { setForm({ ...f }); setEditing(f.id); };
+  const openEdit = (f) => { setForm({ ...f, imageFile: null }); setEditing(f.id); };
   const cancelEdit = () => { setEditing(null); setForm(emptyFormation); };
-
   const handleChange = e => setForm(p => ({ ...p, [e.target.name]: e.target.value }));
 
-  const handleSaveItem = () => {
+  const handleImageUrl = (url) => setForm(p => ({ ...p, image: url, imageFile: null }));
+  const handleImageFile = (file) => setForm(p => ({ ...p, image: URL.createObjectURL(file), imageFile: file }));
+
+  const handleSave = async () => {
     if (!form.title || !form.description) return;
-    let updated;
-    if (editing === 'new') {
-      updated = [...formations, form];
-    } else {
-      updated = formations.map(f => f.id === editing ? form : f);
+    setSaving(true);
+    try {
+      const payload = {
+        title: form.title, description: form.description, duration: form.duration,
+        price: form.price, date: form.date, level: form.level, image_url: form.image || '',
+      };
+      if (editing === 'new') {
+        await createFormation(payload, form.imageFile || null);
+      } else {
+        await updateFormation(form, payload, form.imageFile || null);
+      }
+      await refreshContent();
+      setFormations(content.formations);
+      onSave('Formation sauvegardée !');
+      cancelEdit();
+    } catch (err) {
+      onSave('Erreur: ' + err.message);
+    } finally {
+      setSaving(false);
     }
-    setFormations(updated);
-    updateContent('formations', updated);
-    onSave('Formation sauvegardée !');
-    cancelEdit();
   };
 
-  const handleDelete = (id) => {
-    const updated = formations.filter(f => f.id !== id);
-    setFormations(updated);
-    updateContent('formations', updated);
-    onSave('Formation supprimée.');
+  const handleDelete = async (f) => {
+    if (!confirm('Supprimer cette formation ?')) return;
+    try {
+      await deleteFormation(f);
+      await refreshContent();
+      setFormations(content.formations);
+      onSave('Formation supprimée.');
+    } catch (err) {
+      onSave('Erreur: ' + err.message);
+    }
   };
 
   if (editing !== null) {
@@ -84,21 +100,23 @@ export default function AdminFormations({ onSave }) {
               <input name="date" value={form.date} onChange={handleChange} placeholder="Ex: 15 Avril 2026" />
             </div>
             <div className="admin-field">
-              <label>Image (URL)</label>
-              <input name="image" value={form.image} onChange={handleChange} placeholder="https://..." />
+              <label>Image</label>
+              <div style={{ display: 'flex', gap: '1rem', marginBottom: '0.5rem' }}>
+                <input type="url" value={form.imageFile ? '' : form.image} onChange={e => handleImageUrl(e.target.value)} placeholder="Collez une URL" style={{ flex: 1 }} />
+                <label className="btn-admin-add" style={{ width: 'auto', margin: 0, cursor: 'pointer' }}>
+                  <i className="fas fa-upload" /> Uploader
+                  <input type="file" accept="image/*" style={{ display: 'none' }} onChange={e => { if (e.target.files[0]) handleImageFile(e.target.files[0]); }} />
+                </label>
+              </div>
             </div>
           </div>
           {form.image && <img src={form.image} alt="" className="img-preview" style={{ maxHeight: 160, borderRadius: 'var(--radius)' }} />}
 
           <div style={{ display: 'flex', gap: '0.75rem', paddingTop: '0.5rem' }}>
-            <button className="btn-admin-save" onClick={handleSaveItem}>
-              <i className="fas fa-save" /> Sauvegarder
+            <button className="btn-admin-save" onClick={handleSave} disabled={saving}>
+              {saving ? <><i className="fas fa-circle-notch fa-spin" /> Enregistrement...</> : <><i className="fas fa-save" /> Sauvegarder</>}
             </button>
-            <button onClick={cancelEdit} style={{
-              padding: '0.65rem 1.25rem', borderRadius: 'var(--radius)',
-              border: '1.5px solid var(--gray-light)', background: 'white',
-              color: 'var(--gray)', cursor: 'pointer', fontFamily: 'var(--font-body)', fontWeight: '600', fontSize: '0.88rem'
-            }}>
+            <button onClick={cancelEdit} style={{ padding: '0.65rem 1.25rem', borderRadius: 'var(--radius)', border: '1.5px solid var(--gray-light)', background: 'white', color: 'var(--gray)', cursor: 'pointer', fontFamily: 'var(--font-body)', fontWeight: '600', fontSize: '0.88rem' }}>
               Annuler
             </button>
           </div>
@@ -111,9 +129,7 @@ export default function AdminFormations({ onSave }) {
     <div className="admin-card">
       <div className="admin-card-header">
         <h2><i className="fas fa-chalkboard-user" /> Formations ({formations.length})</h2>
-        <button className="btn-admin-save" onClick={openNew}>
-          <i className="fas fa-plus" /> Ajouter
-        </button>
+        <button className="btn-admin-save" onClick={openNew}><i className="fas fa-plus" /> Ajouter</button>
       </div>
 
       <div className="admin-list">
@@ -128,12 +144,8 @@ export default function AdminFormations({ onSave }) {
               </span>
             </div>
             <div className="admin-list-item-actions">
-              <button className="btn-admin-save" style={{ padding: '0.45rem 0.9rem', fontSize: '0.8rem' }} onClick={() => openEdit(f)}>
-                <i className="fas fa-pen" />
-              </button>
-              <button className="btn-admin-danger" onClick={() => handleDelete(f.id)}>
-                <i className="fas fa-trash" />
-              </button>
+              <button className="btn-admin-save" style={{ padding: '0.45rem 0.9rem', fontSize: '0.8rem' }} onClick={() => openEdit(f)}><i className="fas fa-pen" /></button>
+              <button className="btn-admin-danger" onClick={() => handleDelete(f)}><i className="fas fa-trash" /></button>
             </div>
           </div>
         ))}

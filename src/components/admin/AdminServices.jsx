@@ -1,34 +1,52 @@
 import { useState } from 'react';
 import { useCMS } from '../../context/CMSContext';
+import { createService, updateService, deleteService } from '../../api/strapiAdmin';
 
-const emptyService = { id: null, icon: 'fa-shield-halved', title: '', description: '' };
+const emptyService = { id: null, strapiId: null, icon: 'fa-shield-halved', title: '', description: '', active: true };
 
 export default function AdminServices({ onSave }) {
-  const { content, updateContent } = useCMS();
+  const { content, refreshContent } = useCMS();
   const [services, setServices] = useState(JSON.parse(JSON.stringify(content.services)));
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState(emptyService);
+  const [saving, setSaving] = useState(false);
 
   const openEdit = (s) => { setForm({ ...s }); setEditing(s.id); };
   const openNew = () => { setForm({ ...emptyService, id: Date.now() }); setEditing('new'); };
   const cancelEdit = () => { setEditing(null); setForm(emptyService); };
   const handleChange = e => setForm(p => ({ ...p, [e.target.name]: e.target.value }));
 
-  const handleSave = () => {
-    let updated;
-    if (editing === 'new') updated = [...services, form];
-    else updated = services.map(s => s.id === editing ? form : s);
-    setServices(updated);
-    updateContent('services', updated);
-    onSave('Service sauvegardé !');
-    cancelEdit();
+  const handleSave = async () => {
+    if (!form.title || !form.description) return;
+    setSaving(true);
+    try {
+      const payload = { title: form.title, description: form.description, icon: form.icon, active: true };
+      if (editing === 'new') {
+        await createService(payload);
+      } else {
+        await updateService(form, payload);
+      }
+      await refreshContent();
+      setServices(content.services);
+      onSave('Service sauvegardé !');
+      cancelEdit();
+    } catch (err) {
+      onSave('Erreur: ' + err.message);
+    } finally {
+      setSaving(false);
+    }
   };
 
-  const handleDelete = (id) => {
-    const updated = services.filter(s => s.id !== id);
-    setServices(updated);
-    updateContent('services', updated);
-    onSave('Service supprimé.');
+  const handleDelete = async (s) => {
+    if (!confirm('Supprimer ce service ?')) return;
+    try {
+      await deleteService(s);
+      await refreshContent();
+      setServices(content.services);
+      onSave('Service supprimé.');
+    } catch (err) {
+      onSave('Erreur: ' + err.message);
+    }
   };
 
   if (editing !== null) {
@@ -50,7 +68,7 @@ export default function AdminServices({ onSave }) {
               <label>Icône FontAwesome</label>
               <input name="icon" value={form.icon} onChange={handleChange} placeholder="fa-shield-halved" />
               <small style={{ color: 'var(--gray)', fontSize: '0.72rem' }}>
-                Cherchez sur <a href="https://fontawesome.com/icons" target="_blank" rel="noreferrer" style={{ color: 'var(--primary)' }}>fontawesome.com/icons</a> → copiez la classe (ex: fa-lock)
+                <a href="https://fontawesome.com/icons" target="_blank" rel="noreferrer" style={{ color: 'var(--primary)' }}>fontawesome.com/icons</a>
               </small>
             </div>
           </div>
@@ -59,7 +77,9 @@ export default function AdminServices({ onSave }) {
             <textarea name="description" value={form.description} onChange={handleChange} rows={4} placeholder="Description du service..." />
           </div>
           <div style={{ display: 'flex', gap: '0.75rem' }}>
-            <button className="btn-admin-save" onClick={handleSave}><i className="fas fa-save" /> Sauvegarder</button>
+            <button className="btn-admin-save" onClick={handleSave} disabled={saving}>
+              {saving ? <><i className="fas fa-circle-notch fa-spin" /> Enregistrement...</> : <><i className="fas fa-save" /> Sauvegarder</>}
+            </button>
             <button onClick={cancelEdit} style={{ padding: '0.65rem 1.25rem', borderRadius: 'var(--radius)', border: '1.5px solid var(--gray-light)', background: 'white', color: 'var(--gray)', cursor: 'pointer', fontFamily: 'var(--font-body)', fontWeight: '600', fontSize: '0.88rem' }}>Annuler</button>
           </div>
         </div>
@@ -85,7 +105,7 @@ export default function AdminServices({ onSave }) {
             </div>
             <div className="admin-list-item-actions">
               <button className="btn-admin-save" style={{ padding: '0.45rem 0.9rem', fontSize: '0.8rem' }} onClick={() => openEdit(s)}><i className="fas fa-pen" /></button>
-              <button className="btn-admin-danger" onClick={() => handleDelete(s.id)}><i className="fas fa-trash" /></button>
+              <button className="btn-admin-danger" onClick={() => handleDelete(s)}><i className="fas fa-trash" /></button>
             </div>
           </div>
         ))}

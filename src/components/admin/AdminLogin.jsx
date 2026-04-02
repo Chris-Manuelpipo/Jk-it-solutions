@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { loginStrapi } from '../../api/strapiAdmin';
 import '../../pages/Admin.css';
 
 export default function AdminLogin({ onLogin }) {
@@ -12,10 +13,14 @@ export default function AdminLogin({ onLogin }) {
     e.preventDefault();
     setError('');
     setLoading(true);
-    await new Promise(r => setTimeout(r, 600));
-    const ok = onLogin(username, password);
-    if (!ok) setError('Identifiants incorrects. Vérifiez votre nom d\'utilisateur et mot de passe.');
-    setLoading(false);
+    try {
+      await loginStrapi(username, password);
+      onLogin();
+    } catch (err) {
+      setError('Identifiants incorrects ou serveur Strapi inaccessible.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -35,12 +40,12 @@ export default function AdminLogin({ onLogin }) {
 
         <form className="admin-login-form" onSubmit={handleSubmit}>
           <div className="admin-field">
-            <label>Nom d'utilisateur</label>
+            <label>Email</label>
             <input
-              type="text"
+              type="email"
               value={username}
               onChange={e => setUsername(e.target.value)}
-              placeholder="admin"
+              placeholder="votre@email.com"
               required
               autoFocus
             />
@@ -75,7 +80,7 @@ export default function AdminLogin({ onLogin }) {
         </form>
 
         <div className="admin-login-hint">
-          <i className="fas fa-info-circle" /> Démo — user: <strong>admin</strong> / pass: <strong>jkits2025</strong>
+          <i className="fas fa-info-circle" /> Utilisez votre email et mot de passe Strapi
         </div>
       </div>
     </div>

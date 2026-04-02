@@ -6,13 +6,30 @@ export const getStrapiURL = (path = '') => {
   return `${STRAPI_URL}${path}`;
 };
 
-// Résout l'image : priorité image_file (Cloudinary/local) sinon image_url
 export const resolveImage = (item) => {
-  if (item?.image_file?.url) return getStrapiURL(item.image_file.url);
-  if (item?.avatar_file?.url) return getStrapiURL(item.avatar_file.url);
-  if (item?.image_url) return item.image_url;
-  if (item?.avatar_url) return item.avatar_url;
-  return null;
+  if (!item) return null;
+
+  // Strapi v5 : { data: { attributes: { url: '...' } } }
+  const getV5Url = (field) => {
+    if (!field) return null;
+    if (typeof field === 'object') {
+      if (field.data?.attributes?.url) return getStrapiURL(field.data.attributes.url);
+      if (field.data?.url) return getStrapiURL(field.data.url);
+      if (field.url) return getStrapiURL(field.url);
+    }
+    return null;
+  };
+
+  return (
+    getV5Url(item.image) ||
+    getV5Url(item.avatar) ||
+    getV5Url(item.image_file) ||
+    getV5Url(item.avatar_file) ||
+    getV5Url(item.logo) ||
+    item.image_url ||
+    item.avatar_url ||
+    null
+  );
 };
 
 // export async function fetchStrapi(endpoint) {

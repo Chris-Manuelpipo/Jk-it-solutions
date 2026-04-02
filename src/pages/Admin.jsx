@@ -1,32 +1,25 @@
 import { useState, useEffect } from 'react';
 import { useCMS } from '../context/CMSContext';
+import { getStrapiToken, clearStrapiAuth } from '../api/strapiAdmin';
 import AdminLogin from '../components/admin/AdminLogin';
 import AdminDashboard from '../components/admin/AdminDashboard';
 import './Admin.css';
 
-// Simple admin auth (à remplacer par Strapi Users & Permissions en production)
-const ADMIN_CREDENTIALS = { username: 'admin', password: 'jkits2025' };
-
 export default function Admin() {
   const { setIsAdmin } = useCMS();
-  const [loggedIn, setLoggedIn] = useState(() => sessionStorage.getItem('jkits_admin') === 'true');
+  const [loggedIn, setLoggedIn] = useState(() => !!getStrapiToken());
 
   useEffect(() => {
     setIsAdmin(loggedIn);
     return () => setIsAdmin(false);
   }, [loggedIn, setIsAdmin]);
 
-  const handleLogin = (username, password) => {
-    if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
-      sessionStorage.setItem('jkits_admin', 'true');
-      setLoggedIn(true);
-      return true;
-    }
-    return false;
+  const handleLogin = () => {
+    setLoggedIn(true);
   };
 
   const handleLogout = () => {
-    sessionStorage.removeItem('jkits_admin');
+    clearStrapiAuth();
     setLoggedIn(false);
   };
 
