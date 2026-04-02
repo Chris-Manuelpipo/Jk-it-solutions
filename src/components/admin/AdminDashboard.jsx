@@ -170,31 +170,6 @@ function Overview({ content, setActiveTab }) {
           ))}
         </div>
       </div>
-
-      <div className="admin-card" style={{ marginTop: '1rem' }}>
-        <div className="admin-card-header">
-          <h2><i className="fas fa-circle-info" /> Guide Strapi</h2>
-        </div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', fontSize: '0.85rem', color: 'var(--gray)', lineHeight: '1.7' }}>
-          <div>
-            <strong style={{ color: 'var(--dark)', display: 'block', marginBottom: '0.5rem' }}>📦 Migration vers Strapi</strong>
-            <p>Ce back-office utilise actuellement <code>localStorage</code>. Pour connecter Strapi :</p>
-            <ol style={{ paddingLeft: '1.25rem', marginTop: '0.5rem' }}>
-              <li>Installer Strapi : <code>npx create-strapi-app@latest</code></li>
-              <li>Créer les collections : Hero, Services, Formations, etc.</li>
-              <li>Remplacer <code>useCMS()</code> par des appels <code>axios</code> à l'API Strapi</li>
-            </ol>
-          </div>
-          <div>
-            <strong style={{ color: 'var(--dark)', display: 'block', marginBottom: '0.5rem' }}>🚀 Déploiement</strong>
-            <ul style={{ paddingLeft: '1.25rem', marginTop: '0.5rem' }}>
-              <li>Frontend React → <strong>Vercel</strong> ou <strong>Netlify</strong></li>
-              <li>Strapi CMS → <strong>Railway</strong> ou <strong>Render</strong></li>
-              <li>Identifiants admin actuels → <code>admin / jkits2025</code></li>
-            </ul>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

@@ -68,7 +68,7 @@ export default function AdminServices({ onSave }) {
               <label>Icône FontAwesome</label>
               <input name="icon" value={form.icon} onChange={handleChange} placeholder="fa-shield-halved" />
               <small style={{ color: 'var(--gray)', fontSize: '0.72rem' }}>
-                <a href="https://fontawesome.com/icons" target="_blank" rel="noreferrer" style={{ color: 'var(--primary)' }}>fontawesome.com/icons</a>
+                Cliquez ici pour choisir une icone fa : <a href="https://fontawesome.com/icons" target="_blank" rel="noreferrer" style={{ color: 'var(--primary)' }}>fontawesome.com/icons</a>
               </small>
             </div>
           </div>
