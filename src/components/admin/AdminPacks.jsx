@@ -102,7 +102,7 @@ export default function AdminPacks({ onSave }) {
                         </div>
                     </div>
                     {form.originalPrice > 0 && form.promoPrice > 0 && (
-                        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', padding: '0.75rem 1rem', background: 'var(--light)', borderRadius: 'var(--radius)', fontSize: '0.88rem', flexWrap: 'wrap' }}>
+                        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', padding: '0.75rem 1rem', background: 'var(--light)', borderRadius: 'var(--radius)', fontSize: '0.88rem', flexWrap: 'wrap' }} className="admin-price-summary">
                             <span style={{ textDecoration: 'line-through', color: 'var(--gray)' }}>{formatPrice(form.originalPrice)} {form.currency}</span>
                             <span style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--primary)' }}>{formatPrice(form.promoPrice)} {form.currency}</span>
                             {discount(form.originalPrice, form.promoPrice) > 0 && <span style={{ background: '#fee2e2', color: '#dc2626', padding: '0.2rem 0.6rem', borderRadius: '50px', fontWeight: 700 }}>−{discount(form.originalPrice, form.promoPrice)}%</span>}
@@ -118,9 +118,9 @@ export default function AdminPacks({ onSave }) {
                             <input name="cta" value={form.cta} onChange={handleChange} />
                         </div>
                     </div>
-                    <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }} className="admin-checkboxes">
                         <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.88rem', fontWeight: 600 }}>
-                            <input type="checkbox" name="featured" checked={form.featured} onChange={handleChange} /> ⭐ Mis en avant
+                            <input type="checkbox" name="featured" checked={form.featured} onChange={handleChange} /> Mis en avant
                         </label>
                         <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.88rem', fontWeight: 600 }}>
                             <input type="checkbox" name="active" checked={form.active} onChange={handleChange} /> Visible
@@ -131,11 +131,11 @@ export default function AdminPacks({ onSave }) {
                             <span>Éléments inclus</span>
                             <button type="button" onClick={addItem} style={{ background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '50px', padding: '0.2rem 0.7rem', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}>+ Ajouter</button>
                         </label>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '0.25rem' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '0.25rem' }} className="admin-items-list">
                             {form.items.map((item, i) => (
-                                <div key={i} style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                                <div key={i} style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
                                     <span style={{ color: 'var(--primary)', fontWeight: 700 }}>✓</span>
-                                    <input value={item} onChange={e => handleItemChange(i, e.target.value)} placeholder={`Élément ${i + 1}`} style={{ flex: 1 }} />
+                                    <input value={item} onChange={e => handleItemChange(i, e.target.value)} placeholder={`Élément ${i + 1}`} style={{ flex: 1, minWidth: '150px' }} />
                                     {form.items.length > 1 && <button type="button" onClick={() => removeItem(i)} style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer' }}><i className="fas fa-times" /></button>}
                                 </div>
                             ))}
@@ -167,8 +167,8 @@ export default function AdminPacks({ onSave }) {
                                 <i className="fas fa-tags" style={{ color: p.featured ? '#4f46e5' : 'var(--gray)', fontSize: '1.1rem' }} />
                             </div>
                             <div className="admin-list-item-info" style={{ flex: 1 }}>
-                                <strong style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>{p.title}{p.featured && <span style={{ background: '#e0e7ff', color: '#4f46e5', fontSize: '0.65rem', padding: '0.1rem 0.4rem', borderRadius: '50px', fontWeight: 700 }}>⭐</span>}{!p.active && <span style={{ background: '#f1f5f9', color: '#94a3b8', fontSize: '0.65rem', padding: '0.1rem 0.4rem', borderRadius: '50px', fontWeight: 700 }}>Masqué</span>}</strong>
-                                <span style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
+                                <strong style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }} className="admin-packs-strong">{p.title}{p.featured && <span style={{ background: '#e0e7ff', color: '#4f46e5', fontSize: '0.65rem', padding: '0.1rem 0.4rem', borderRadius: '50px', fontWeight: 700 }}>Mis en avant</span>}{!p.active && <span style={{ background: '#f1f5f9', color: '#94a3b8', fontSize: '0.65rem', padding: '0.1rem 0.4rem', borderRadius: '50px', fontWeight: 700 }}>Masqué</span>}</strong>
+                                <span style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center' }} className="admin-packs-info">
                                     <span style={{ textDecoration: 'line-through', color: 'var(--gray)', fontSize: '0.8rem' }}>{formatPrice(p.originalPrice)}</span>
                                     <strong style={{ color: 'var(--primary)' }}>{formatPrice(p.promoPrice)} {p.currency}</strong>
                                     {disc > 0 && <span style={{ background: '#fee2e2', color: '#dc2626', fontSize: '0.7rem', padding: '0.1rem 0.4rem', borderRadius: '50px', fontWeight: 700 }}>−{disc}%</span>}

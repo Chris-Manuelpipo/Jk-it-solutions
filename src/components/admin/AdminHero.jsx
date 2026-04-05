@@ -90,7 +90,7 @@ export default function AdminHero({ onSave }) {
             {saving ? <><i className="fas fa-circle-notch fa-spin" /> Enregistrement...</> : <><i className="fas fa-save" /> Sauvegarder</>}
           </button>
         </div>
-        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
+        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '1rem' }} className="admin-slides-selector">
           {slides.map((s, i) => (
             <button
               key={s.id}
@@ -133,7 +133,7 @@ export default function AdminHero({ onSave }) {
             {/* Image */}
             <div className="admin-field">
               <label>Image de fond</label>
-              <div style={{ display: 'flex', gap: '1rem', marginBottom: '0.5rem' }}>
+              <div style={{ display: 'flex', gap: '1rem', marginBottom: '0.5rem' }} className="admin-img-url-wrap">
                 <input
                   type="url"
                   value={slide.imageFile ? '' : slide.image}
@@ -174,15 +174,15 @@ export default function AdminHero({ onSave }) {
               />
             </div>
 
-            <div className="admin-form-row">
+            <div className="admin-form-row admin-cta-row">
               <div>
                 <label style={{ fontWeight: '600', fontSize: '0.8rem', color: 'var(--dark)', display: 'block', marginBottom: '0.5rem' }}>Bouton 1 (Principal)</label>
-                <div style={{ display: 'flex', gap: '0.5rem' }}>
-                  <div className="admin-field" style={{ flex: 1 }}>
+                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  <div className="admin-field" style={{ flex: 1, minWidth: '100px' }}>
                     <label>Texte</label>
                     <input type="text" value={slide.cta1.text} onChange={e => updateCta(activeSlide, 'cta1', 'text', e.target.value)} />
                   </div>
-                  <div className="admin-field" style={{ flex: 1 }}>
+                  <div className="admin-field" style={{ flex: 1, minWidth: '100px' }}>
                     <label>Lien</label>
                     <input type="text" value={slide.cta1.link} onChange={e => updateCta(activeSlide, 'cta1', 'link', e.target.value)} />
                   </div>
@@ -190,12 +190,12 @@ export default function AdminHero({ onSave }) {
               </div>
               <div>
                 <label style={{ fontWeight: '600', fontSize: '0.8rem', color: 'var(--dark)', display: 'block', marginBottom: '0.5rem' }}>Bouton 2 (Secondaire)</label>
-                <div style={{ display: 'flex', gap: '0.5rem' }}>
-                  <div className="admin-field" style={{ flex: 1 }}>
+                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  <div className="admin-field" style={{ flex: 1, minWidth: '100px' }}>
                     <label>Texte</label>
                     <input type="text" value={slide.cta2.text} onChange={e => updateCta(activeSlide, 'cta2', 'text', e.target.value)} />
                   </div>
-                  <div className="admin-field" style={{ flex: 1 }}>
+                  <div className="admin-field" style={{ flex: 1, minWidth: '100px' }}>
                     <label>Lien</label>
                     <input type="text" value={slide.cta2.link} onChange={e => updateCta(activeSlide, 'cta2', 'link', e.target.value)} />
                   </div>

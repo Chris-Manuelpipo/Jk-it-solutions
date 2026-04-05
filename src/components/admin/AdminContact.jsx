@@ -89,7 +89,7 @@ export function AdminContact({ onSave }) {
           </div>
           <div className="admin-field">
             <label>Instagram URL</label>
-            <input type="url" value={contact.instagram} onChange={e => handleContact('instagram', e.target.value)} />
+            <input type="url" value={contact.instagram} onChange={e => handleContact('instagram', e.target.value)} className="admin-full-width" />
           </div>
         </div>
       </div>
@@ -148,7 +148,7 @@ export function AdminTestimonials({ onSave }) {
         <div className="admin-form-row">
           <div className="admin-field">
             <label>Photo</label>
-            <div style={{ display: 'flex', gap: '1rem', marginBottom: '0.5rem' }}>
+            <div style={{ display: 'flex', gap: '1rem', marginBottom: '0.5rem' }} className="admin-img-url-wrap">
               <input type="url" value={form.avatarFile ? '' : form.avatar} onChange={e => handleAvatarUrl(e.target.value)} placeholder="Collez une URL" style={{ flex: 1 }} />
               <label className="btn-admin-add" style={{ width: 'auto', margin: 0, cursor: 'pointer' }}>
                 <i className="fas fa-upload" /> Uploader

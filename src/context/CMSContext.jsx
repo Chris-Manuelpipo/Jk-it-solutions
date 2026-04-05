@@ -8,8 +8,8 @@ const defaultContent = {
     slides: [
       {
         id: 1,
-        title: "Meilleure Solution De Cybersécurité & Vidéosurveillance Pour Vous",
-        subtitle: "JK IT Solutions protège vos systèmes avec des technologies de pointe adaptées aux entreprises africaines.",
+        title: "Meilleure Solution De Cybersécurité & Vidéosurveillance",
+        subtitle: "JK IT Solutions protège vos systèmes avec des technologies de pointe adaptées aux entreprises.",
         image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1600&q=80",
         cta1: { text: "Nos Services", link: "/services" },
         cta2: { text: "Devis Gratuit", link: "/contact" },

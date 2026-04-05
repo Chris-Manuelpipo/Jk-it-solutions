@@ -118,7 +118,7 @@ export default function AdminAbout({ onSave }) {
           </div>
           <div className="admin-field">
             <label>Photo</label>
-            <div style={{ display: 'flex', gap: '1rem', marginBottom: '0.5rem' }}>
+            <div style={{ display: 'flex', gap: '1rem', marginBottom: '0.5rem' }} className="admin-img-url-wrap">
               <input
                 type="url"
                 value={memberForm.imageFile ? '' : memberForm.image}
@@ -182,7 +182,7 @@ export default function AdminAbout({ onSave }) {
           </div>
           <div className="admin-field">
             <label>Image</label>
-            <div style={{ display: 'flex', gap: '1rem', marginBottom: '0.5rem' }}>
+            <div style={{ display: 'flex', gap: '1rem', marginBottom: '0.5rem' }} className="admin-img-url-wrap">
               <input
                 type="url"
                 value={about.imageFile ? '' : about.image}
@@ -212,7 +212,7 @@ export default function AdminAbout({ onSave }) {
             <i className="fas fa-save" /> Sauvegarder
           </button>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }} className="admin-stats-grid">
           {about.stats.map((stat, i) => (
             <div key={i} style={{ background: 'var(--light)', borderRadius: 'var(--radius)', padding: '1rem' }}>
               <div className="admin-field" style={{ marginBottom: '0.5rem' }}>

@@ -79,8 +79,8 @@ export default function AdminProjects({ onSave }) {
                             <select name="statuse" value={form.statuse} onChange={handleChange}>{STATUSES.map(s => <option key={s}>{s}</option>)}</select>
                         </div>
                     </div>
-                    <div className="admin-field">
-                        <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <div className="admin-field admin-range-progress">
+                        <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
                             <span>Avancement</span>
                             <strong style={{ fontSize: '1.1rem', color: progressColor(form.progress) }}>{form.progress}%</strong>
                         </label>
@@ -101,7 +101,7 @@ export default function AdminProjects({ onSave }) {
                     </div>
                     <div className="admin-field">
                         <label>Image</label>
-                        <div style={{ display: 'flex', gap: '1rem', marginBottom: '0.5rem' }}>
+                        <div style={{ display: 'flex', gap: '1rem', marginBottom: '0.5rem' }} className="admin-img-url-wrap">
                             <input type="url" value={form.imageFile ? '' : form.image} onChange={e => handleImageUrl(e.target.value)} placeholder="Collez une URL" style={{ flex: 1 }} />
                             <label className="btn-admin-add" style={{ width: 'auto', margin: 0, cursor: 'pointer' }}>
                                 <i className="fas fa-upload" /> Uploader
@@ -133,12 +133,12 @@ export default function AdminProjects({ onSave }) {
                         {p.image && <img src={p.image} alt="" className="admin-list-item-img" />}
                         <div className="admin-list-item-info" style={{ flex: 1 }}>
                             <strong>{p.title}</strong>
-                            <span>
-                                <span style={{ background: '#e0e7ff', color: '#1e40af', padding: '0.15rem 0.5rem', borderRadius: '50px', fontSize: '0.7rem', marginRight: '0.5rem', fontWeight: 600 }}>{p.category}</span>
-                                {p.client} · {p.startDate} → {p.endDate}
+                            <span style={{ display: 'flex', flexWrap: 'wrap', gap: '0.3rem', alignItems: 'center' }}>
+                                <span style={{ background: '#e0e7ff', color: '#1e40af', padding: '0.15rem 0.5rem', borderRadius: '50px', fontSize: '0.7rem', fontWeight: 600 }}>{p.category}</span>
+                                <span style={{ color: 'var(--gray)', fontSize: '0.75rem' }}>{p.client}</span>
                             </span>
-                            <div style={{ marginTop: '0.4rem', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                                <div style={{ flex: 1, height: '6px', background: '#e2e8f0', borderRadius: '999px', overflow: 'hidden' }}>
+                            <div style={{ marginTop: '0.4rem', display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
+                                <div style={{ flex: 1, minWidth: '100px', height: '6px', background: '#e2e8f0', borderRadius: '999px', overflow: 'hidden' }}>
                                     <div style={{ height: '100%', borderRadius: '999px', width: `${p.progress}%`, background: progressColor(p.progress) }} />
                                 </div>
                                 <span style={{ fontSize: '0.78rem', fontWeight: '700', color: progressColor(p.progress), minWidth: '36px' }}>{p.progress}%</span>

@@ -26,6 +26,7 @@ const tabs = [
 export default function AdminDashboard({ onLogout }) {
   const [activeTab, setActiveTab] = useState('overview');
   const [toast, setToast] = useState('');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const { content } = useCMS();
 
   const showToast = (msg) => {
@@ -38,7 +39,7 @@ export default function AdminDashboard({ onLogout }) {
   return (
     <div className="admin-layout">
       {/* Sidebar */}
-      <aside className="admin-sidebar">
+      <aside className={`admin-sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="admin-sidebar-header">
           <div className="admin-sidebar-logo"><i className="fas fa-shield-halved" /></div>
           <div>
@@ -53,16 +54,16 @@ export default function AdminDashboard({ onLogout }) {
             <button
               key={tab.id}
               className={`admin-nav-item ${activeTab === tab.id ? 'active' : ''}`}
-              onClick={() => setActiveTab(tab.id)}
+              onClick={() => { setActiveTab(tab.id); setSidebarOpen(false); }}
             >
               <i className={`fas ${tab.icon}`} />
-              {tab.label}
+              <span>{tab.label}</span>
             </button>
           ))}
 
           <div className="admin-nav-section" style={{ marginTop: '1rem' }}>Accès Rapide</div>
           <Link to="/" target="_blank" className="admin-nav-item" style={{ textDecoration: 'none' }}>
-            <i className="fas fa-external-link-alt" /> Voir le site
+            <i className="fas fa-external-link-alt" /> <span>Voir le site</span>
           </Link>
         </nav>
 
@@ -73,13 +74,18 @@ export default function AdminDashboard({ onLogout }) {
         </div>
       </aside>
 
+      {sidebarOpen && <div className="admin-overlay" onClick={() => setSidebarOpen(false)} />}
+
       {/* Main */}
       <div className="admin-main">
         <header className="admin-topbar">
+          <button className="admin-hamburger" onClick={() => setSidebarOpen(!sidebarOpen)} aria-label="Menu">
+            <i className={`fas ${sidebarOpen ? 'fa-times' : 'fa-bars'}`} />
+          </button>
           <h1><i className={`fas ${currentTab?.icon}`} style={{ color: 'var(--primary)', marginRight: '0.5rem' }} />{currentTab?.label}</h1>
           <div className="admin-topbar-actions">
             <Link to="/" target="_blank" className="btn-admin-save" style={{ fontSize: '0.8rem', padding: '0.5rem 1rem' }}>
-              <i className="fas fa-eye" /> Voir le site
+              <i className="fas fa-eye" /> <span className="hide-mobile">Voir le site</span>
             </Link>
           </div>
         </header>
@@ -141,7 +147,7 @@ function Overview({ content, setActiveTab }) {
         <div className="admin-card-header">
           <h2><i className="fas fa-bolt" /> Actions Rapides</h2>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }} className="admin-quick-actions">
           {[
             { icon: 'fa-images', label: 'Modifier le Carousel', tab: 'hero', color: '#3b82f6' },
             { icon: 'fa-chalkboard-user', label: 'Gérer les Formations', tab: 'formations', color: '#f59e0b' },

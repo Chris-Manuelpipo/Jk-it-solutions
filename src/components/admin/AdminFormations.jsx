@@ -101,7 +101,7 @@ export default function AdminFormations({ onSave }) {
             </div>
             <div className="admin-field">
               <label>Image</label>
-              <div style={{ display: 'flex', gap: '1rem', marginBottom: '0.5rem' }}>
+              <div style={{ display: 'flex', gap: '1rem', marginBottom: '0.5rem' }} className="admin-img-url-wrap">
                 <input type="url" value={form.imageFile ? '' : form.image} onChange={e => handleImageUrl(e.target.value)} placeholder="Collez une URL" style={{ flex: 1 }} />
                 <label className="btn-admin-add" style={{ width: 'auto', margin: 0, cursor: 'pointer' }}>
                   <i className="fas fa-upload" /> Uploader
