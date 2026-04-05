@@ -23,6 +23,8 @@ export default function Footer() {
               <a href={contact.facebook} target="_blank" rel="noreferrer" aria-label="Facebook"><i className="fab fa-facebook-f" /></a>
               <a href={contact.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn"><i className="fab fa-linkedin-in" /></a>
               <a href={`https://wa.me/${contact.whatsapp?.replace(/\D/g,'')}`} target="_blank" rel="noreferrer" aria-label="WhatsApp"><i className="fab fa-whatsapp" /></a>
+              <a href={contact.instagram} target="_blank" rel="noreferrer" aria-label="Instagram"><i className="fab fa-instagram" /></a>
+              <a href={contact.tiktok} target="_blank" rel="noreferrer" aria-label="TikTok"><i className="fab fa-tiktok" /></a>
             </div>
           </div>
 

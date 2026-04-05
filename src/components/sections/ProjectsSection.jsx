@@ -10,6 +10,7 @@ const CATEGORY_COLORS = {
     'Audit': { bg: '#b45309', gradient: 'linear-gradient(135deg, #b45309, #fbbf24)' },
     'Formation': { bg: '#16a34a', gradient: 'linear-gradient(135deg, #16a34a, #4ade80)' },
     'Réseau': { bg: '#dc2626', gradient: 'linear-gradient(135deg, #dc2626, #f87171)' },
+    'Autre': { bg: '#6b7280', gradient: 'linear-gradient(135deg, #6b7280, #9ca3af)' },
 };
 
 const getColor = (cat) => CATEGORY_COLORS[cat] || { bg: '#1e40af', gradient: 'linear-gradient(135deg, #1e40af, #3b82f6)' };
@@ -118,13 +119,10 @@ export default function ProjectsSection({ preview = false }) {
         <section className="projects-section">
             <div className="container">
                 <div className="section-header">
-                    <p className="section-tag">Nos Réalisations</p>
-                    <h2 className="section-title projects-section-title">
-                        Projets <span>& Chantiers</span> en Cours
-                    </h2>
-                    <p className="section-subtitle">
-                        Découvrez nos projets en temps réel — chaque avancement est mis à jour par notre équipe pour une transparence totale.
-                    </p>
+                    <span className="badge">Nos Réalisations</span>
+                    <h2>Projets & Chantiers en Cours</h2>
+                    <div className="divider" />
+                    <p>Découvrez nos projets en temps réel — chaque avancement est mis à jour par notre équipe pour une transparence totale.</p>
                 </div>
 
                 {!preview && (

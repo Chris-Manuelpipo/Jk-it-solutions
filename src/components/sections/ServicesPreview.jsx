@@ -6,7 +6,7 @@ export default function ServicesPreview() {
   const { content } = useCMS();
   const { services } = content;
   const preview = services.slice(0, 6);
-
+ 
   return (
     <section className="section-padding services-preview-section">
       <div className="container">
