@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jk-it-solutions.com/sitemap.xml
