@@ -6,6 +6,11 @@
   overflow: hidden;
 }
 
+.projects-section .section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
 .projects-section.page-full {
   padding: 5rem 0;
 }
