@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useCMS } from '../../context/CMSContext';
 import { updateAbout } from '../../api/strapiAdmin';
 import { createTeamMember, updateTeamMember, deleteTeamMember } from '../../api/strapiAdmin';
+import ImageUrlField from './ImageUrlField';
 
 const emptyMember = { id: null, strapiId: null, name: '', role: '', image: '', imageFile: null, linkedin: '', facebook: '', whatsapp: '' };
 
@@ -118,19 +119,11 @@ export default function AdminAbout({ onSave }) {
           </div>
           <div className="admin-field">
             <label>Photo</label>
-            <div style={{ display: 'flex', gap: '1rem', marginBottom: '0.5rem' }} className="admin-img-url-wrap">
-              <input
-                type="url"
-                value={memberForm.imageFile ? '' : memberForm.image}
-                onChange={e => handleMemberImageUrl(e.target.value)}
-                placeholder="Collez une URL (https://...)"
-                style={{ flex: 1 }}
-              />
-              <label className="btn-admin-add" style={{ width: 'auto', margin: 0, cursor: 'pointer' }}>
-                <i className="fas fa-upload" /> Uploader
-                <input type="file" accept="image/*" style={{ display: 'none' }} onChange={e => { if (e.target.files[0]) handleMemberImageFile(e.target.files[0]); }} />
-              </label>
-            </div>
+            <ImageUrlField
+              value={memberForm.image}
+              onChange={handleMemberImageUrl}
+              preview={false}
+            />
             {memberForm.image && (
               <img src={memberForm.image} alt="" style={{ width: 80, height: 80, borderRadius: '50%', objectFit: 'cover', marginBottom: '0.75rem', border: '3px solid var(--primary)' }} />
             )}
@@ -180,28 +173,11 @@ export default function AdminAbout({ onSave }) {
             <label>Texte de présentation</label>
             <textarea value={about.text} onChange={e => handleChange('text', e.target.value)} rows={5} />
           </div>
-          <div className="admin-field">
-            <label>Image</label>
-            <div style={{ display: 'flex', gap: '1rem', marginBottom: '0.5rem' }} className="admin-img-url-wrap">
-              <input
-                type="url"
-                value={about.imageFile ? '' : about.image}
-                onChange={e => setAbout(p => ({ ...p, image: e.target.value, imageFile: null }))}
-                placeholder="Collez une URL (https://...)"
-                style={{ flex: 1 }}
-              />
-              <label className="btn-admin-add" style={{ width: 'auto', margin: 0, cursor: 'pointer' }}>
-                <i className="fas fa-upload" /> Uploader
-                <input type="file" accept="image/*" style={{ display: 'none' }} onChange={e => {
-                  if (e.target.files[0]) {
-                    const file = e.target.files[0];
-                    setAbout(p => ({ ...p, image: URL.createObjectURL(file), imageFile: file }));
-                  }
-                }} />
-              </label>
-            </div>
-            {about.image && <img src={about.image} alt="" className="img-preview" />}
-          </div>
+          <ImageUrlField
+            label="Image"
+            value={about.image}
+            onChange={v => setAbout(p => ({ ...p, image: v, imageFile: null }))}
+          />
         </div>
       </div>
 

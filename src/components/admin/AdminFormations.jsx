@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useCMS } from '../../context/CMSContext';
 import { createFormation, updateFormation, deleteFormation } from '../../api/strapiAdmin';
+import ImageUrlField from './ImageUrlField';
 
 const emptyFormation = { id: null, strapiId: null, title: '', description: '', duration: '', price: '', date: '', image: '', imageFile: null, level: 'Débutant' };
 const levelColor = { 'Débutant': '#22c55e', 'Intermédiaire': '#f59e0b', 'Avancé': '#ef4444' };
@@ -99,16 +100,11 @@ export default function AdminFormations({ onSave }) {
               <label>Date</label>
               <input name="date" value={form.date} onChange={handleChange} placeholder="Ex: 15 Avril 2026" />
             </div>
-            <div className="admin-field">
-              <label>Image</label>
-              <div style={{ display: 'flex', gap: '1rem', marginBottom: '0.5rem' }} className="admin-img-url-wrap">
-                <input type="url" value={form.imageFile ? '' : form.image} onChange={e => handleImageUrl(e.target.value)} placeholder="Collez une URL" style={{ flex: 1 }} />
-                <label className="btn-admin-add" style={{ width: 'auto', margin: 0, cursor: 'pointer' }}>
-                  <i className="fas fa-upload" /> Uploader
-                  <input type="file" accept="image/*" style={{ display: 'none' }} onChange={e => { if (e.target.files[0]) handleImageFile(e.target.files[0]); }} />
-                </label>
-              </div>
-            </div>
+            <ImageUrlField
+              label="Image"
+              value={form.image}
+              onChange={handleImageUrl}
+            />
           </div>
           {form.image && <img src={form.image} alt="" className="img-preview" style={{ maxHeight: 160, borderRadius: 'var(--radius)' }} />}
 

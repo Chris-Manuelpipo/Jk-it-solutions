@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useCMS } from '../../context/CMSContext';
 import { createHeroSlide, updateHeroSlide, deleteHeroSlide } from '../../api/strapiAdmin';
+import ImageUrlField from './ImageUrlField';
 
 export default function AdminHero({ onSave }) {
   const { content, refreshContent } = useCMS();
@@ -130,31 +131,11 @@ export default function AdminHero({ onSave }) {
           </div>
 
           <div className="admin-form">
-            {/* Image */}
-            <div className="admin-field">
-              <label>Image de fond</label>
-              <div style={{ display: 'flex', gap: '1rem', marginBottom: '0.5rem' }} className="admin-img-url-wrap">
-                <input
-                  type="url"
-                  value={slide.imageFile ? '' : slide.image}
-                  onChange={e => handleImageUrlChange(activeSlide, e.target.value)}
-                  placeholder="Collez une URL (https://...)"
-                  style={{ flex: 1 }}
-                />
-                <label className="btn-admin-add" style={{ width: 'auto', margin: 0, cursor: 'pointer' }}>
-                  <i className="fas fa-upload" /> Uploader
-                  <input
-                    type="file"
-                    accept="image/*"
-                    style={{ display: 'none' }}
-                    onChange={e => {
-                      if (e.target.files[0]) handleImageFileChange(activeSlide, e.target.files[0]);
-                    }}
-                  />
-                </label>
-              </div>
-              {slide.image && <img src={slide.image} alt="" className="img-preview" />}
-            </div>
+            <ImageUrlField
+              label="Image de fond"
+              value={slide.image}
+              onChange={v => handleImageUrlChange(activeSlide, v)}
+            />
 
             <div className="admin-field">
               <label>Titre principal</label>

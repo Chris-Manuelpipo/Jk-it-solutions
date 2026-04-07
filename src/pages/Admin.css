@@ -624,3 +624,43 @@
   .admin-icon-row { gap: 0.35rem !important; }
   .admin-icon-row input { min-width: 80px !important; flex: 1 !important; }
 }
+
+.admin-img-picker-btn {
+  padding: 0.5rem 0.75rem;
+  background: var(--light-2);
+  color: var(--primary);
+  border: 1.5px solid var(--primary);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: var(--transition);
+}
+.admin-img-picker-btn:hover {
+  background: var(--primary);
+  color: white;
+}
+
+.admin-img-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.75rem;
+}
+.admin-img-picker-grid > div:hover .select-icon {
+  opacity: 1 !important;
+}
+
+@media (max-width: 768px) {
+  .admin-img-picker-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)) !important;
+    gap: 0.5rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-img-picker-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)) !important;
+  }
+}

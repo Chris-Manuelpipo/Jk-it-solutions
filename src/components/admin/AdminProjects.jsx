@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useCMS } from '../../context/CMSContext';
 import { createProject, updateProject, deleteProject } from '../../api/strapiAdmin';
+import ImageUrlField from './ImageUrlField';
 
 const CATEGORIES = ['Cybersécurité', 'Vidéosurveillance', 'IoT', 'Réseau', 'Formation', 'Autre'];
 const STATUSES = ['En cours', 'Terminé', 'En pause'];
@@ -99,17 +100,11 @@ export default function AdminProjects({ onSave }) {
                             <input name="endDate" value={form.endDate} onChange={handleChange} />
                         </div>
                     </div>
-                    <div className="admin-field">
-                        <label>Image</label>
-                        <div style={{ display: 'flex', gap: '1rem', marginBottom: '0.5rem' }} className="admin-img-url-wrap">
-                            <input type="url" value={form.imageFile ? '' : form.image} onChange={e => handleImageUrl(e.target.value)} placeholder="Collez une URL" style={{ flex: 1 }} />
-                            <label className="btn-admin-add" style={{ width: 'auto', margin: 0, cursor: 'pointer' }}>
-                                <i className="fas fa-upload" /> Uploader
-                                <input type="file" accept="image/*" style={{ display: 'none' }} onChange={e => { if (e.target.files[0]) handleImageFile(e.target.files[0]); }} />
-                            </label>
-                        </div>
-                        {form.image && <img src={form.image} alt="" className="img-preview" style={{ maxHeight: 150, borderRadius: 'var(--radius)' }} />}
-                    </div>
+                    <ImageUrlField
+                        label="Image"
+                        value={form.image}
+                        onChange={handleImageUrl}
+                    />
                     <div style={{ display: 'flex', gap: '0.75rem', paddingTop: '0.5rem' }}>
                         <button className="btn-admin-save" onClick={handleSave} disabled={saving}>
                             {saving ? <><i className="fas fa-circle-notch fa-spin" /> Enregistrement...</> : <><i className="fas fa-save" /> Sauvegarder</>}
