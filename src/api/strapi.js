@@ -1,5 +1,7 @@
 const STRAPI_URL = import.meta.env.VITE_STRAPI_URL || 'http://localhost:1337';
- 
+console.log("=======================================================================");
+console.log(STRAPI_URL);
+console.log("=======================================================================");
 export const getStrapiURL = (path = '') => {
   if (!path) return null;
   if (path.startsWith('http')) return path;
@@ -95,6 +97,10 @@ export async function fetchStrapi(endpoint, options = {}) {
         if (!response.ok) {
             const error = await response.json().catch(() => ({ message: `API Error ${response.status}` }));
             throw new Error(error.error?.message || error.message || `Error ${response.status}`);
+        }
+
+        if (response.status === 204 || response.headers.get('content-length') === '0') {
+            return null;
         }
 
         const result = await response.json();
