@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCMS } from '../../context/CMSContext';
 import { createPack, updatePack, deletePack } from '../../api/strapiAdmin';
 
@@ -9,10 +9,14 @@ function formatPrice(n) { return Number(n).toLocaleString('fr-FR'); }
 
 export default function AdminPacks({ onSave }) {
     const { content, refreshContent } = useCMS();
-    const [packs, setPacks] = useState(JSON.parse(JSON.stringify(content.packs || [])));
+    const [packs, setPacks] = useState([]);
     const [editing, setEditing] = useState(null);
     const [form, setForm] = useState(emptyPack);
     const [saving, setSaving] = useState(false);
+
+    useEffect(() => {
+        setPacks(JSON.parse(JSON.stringify(content.packs || [])));
+    }, [content]);
 
     const openNew = () => {
         if (packs.length >= MAX_PACKS) { onSave(`Maximum ${MAX_PACKS} packs.`); return; }
@@ -55,7 +59,11 @@ export default function AdminPacks({ onSave }) {
 
     const handleDelete = async (p) => {
         if (!confirm('Supprimer ce pack ?')) return;
-        try { await deletePack(p); await refreshContent(); setPacks(content.packs); onSave('Pack supprimé.'); }
+        try { 
+            await deletePack(p); 
+            await refreshContent(); 
+            onSave('Pack supprimé.'); 
+        }
         catch (err) { onSave('Erreur: ' + err.message); }
     };
 
@@ -63,7 +71,6 @@ export default function AdminPacks({ onSave }) {
         try {
             await updatePack(p, { active: !p.active });
             await refreshContent();
-            setPacks(content.packs);
         } catch (err) { onSave('Erreur: ' + err.message); }
     };
 
