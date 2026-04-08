@@ -1,13 +1,21 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCMS } from '../../context/CMSContext';
 import { updateContactInfo, updateSiteConfig } from '../../api/strapiAdmin';
 import { createTestimonial, updateTestimonial, deleteTestimonial } from '../../api/strapiAdmin';
 
 export function AdminContact({ onSave }) {
   const { content, refreshContent } = useCMS();
-  const [contact, setContact] = useState({ ...content.contact });
-  const [config, setConfig] = useState({ ...content.siteConfig });
+  const [contact, setContact] = useState({});
+  const [config, setConfig] = useState({});
   const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    setContact(JSON.parse(JSON.stringify(content.contact || {})));
+  }, [content]);
+
+  useEffect(() => {
+    setConfig(JSON.parse(JSON.stringify(content.siteConfig || {})));
+  }, [content]);
 
   const handleContact = (field, value) => setContact(p => ({ ...p, [field]: value }));
   const handleConfig = (field, value) => setConfig(p => ({ ...p, [field]: value }));
@@ -99,10 +107,14 @@ export function AdminContact({ onSave }) {
 
 export function AdminTestimonials({ onSave }) {
   const { content, refreshContent } = useCMS();
-  const [testimonials, setTestimonials] = useState(JSON.parse(JSON.stringify(content.testimonials)));
+  const [testimonials, setTestimonials] = useState([]);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState({});
   const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    setTestimonials(JSON.parse(JSON.stringify(content.testimonials || [])));
+  }, [content]);
 
   const emptyT = { id: null, strapiId: null, name: '', role: '', text: '', avatar: '', avatarFile: null, rating: 5 };
   const openEdit = t => { setForm({ ...t, avatarFile: null }); setEditing(t.id); };

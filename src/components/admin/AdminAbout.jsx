@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCMS } from '../../context/CMSContext';
 import { updateAbout } from '../../api/strapiAdmin';
 import { createTeamMember, updateTeamMember, deleteTeamMember } from '../../api/strapiAdmin';
@@ -8,11 +8,19 @@ const emptyMember = { id: null, strapiId: null, name: '', role: '', image: '', i
 
 export default function AdminAbout({ onSave }) {
   const { content, refreshContent } = useCMS();
-  const [about, setAbout] = useState(JSON.parse(JSON.stringify(content.about)));
-  const [team, setTeam] = useState(JSON.parse(JSON.stringify(content.team || [])));
+  const [about, setAbout] = useState({});
+  const [team, setTeam] = useState([]);
   const [editingMember, setEditingMember] = useState(null);
   const [memberForm, setMemberForm] = useState(emptyMember);
   const [savingAbout, setSavingAbout] = useState(false);
+
+  useEffect(() => {
+    setAbout(JSON.parse(JSON.stringify(content.about || {})));
+  }, [content]);
+
+  useEffect(() => {
+    setTeam(JSON.parse(JSON.stringify(content.team || [])));
+  }, [content]);
 
   const handleChange = (field, value) => setAbout(p => ({ ...p, [field]: value }));
   const handleStatChange = (i, field, value) => {

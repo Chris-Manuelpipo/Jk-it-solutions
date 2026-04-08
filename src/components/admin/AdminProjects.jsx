@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCMS } from '../../context/CMSContext';
 import { createProject, updateProject, deleteProject } from '../../api/strapiAdmin';
 import ImageUrlField from './ImageUrlField';
@@ -10,10 +10,14 @@ const emptyProject = { id: null, strapiId: null, title: '', description: '', cat
 
 export default function AdminProjects({ onSave }) {
     const { content, refreshContent } = useCMS();
-    const [projects, setProjects] = useState(JSON.parse(JSON.stringify(content.projects || [])));
+    const [projects, setProjects] = useState([]);
     const [editing, setEditing] = useState(null);
     const [form, setForm] = useState(emptyProject);
     const [saving, setSaving] = useState(false);
+
+    useEffect(() => {
+        setProjects(JSON.parse(JSON.stringify(content.projects || [])));
+    }, [content]);
 
     const openNew = () => { setForm({ ...emptyProject, id: Date.now() }); setEditing('new'); };
     const openEdit = (p) => { setForm({ ...p, imageFile: null }); setEditing(p.id); };

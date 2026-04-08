@@ -1,13 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCMS } from '../../context/CMSContext';
 import { createHeroSlide, updateHeroSlide, deleteHeroSlide } from '../../api/strapiAdmin';
 import ImageUrlField from './ImageUrlField';
 
 export default function AdminHero({ onSave }) {
   const { content, refreshContent } = useCMS();
-  const [slides, setSlides] = useState(JSON.parse(JSON.stringify(content.hero.slides)));
+  const [slides, setSlides] = useState([]);
   const [activeSlide, setActiveSlide] = useState(0);
   const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    setSlides(JSON.parse(JSON.stringify(content.hero?.slides || [])));
+  }, [content]);
 
   const updateSlide = (idx, field, value) => {
     const updated = slides.map((s, i) => i === idx ? { ...s, [field]: value } : s);

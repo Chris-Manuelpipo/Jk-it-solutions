@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCMS } from '../../context/CMSContext';
 import { createService, updateService, deleteService } from '../../api/strapiAdmin';
 
@@ -316,12 +316,16 @@ const ICONS = [
 
 export default function AdminServices({ onSave }) {
   const { content, refreshContent } = useCMS();
-  const [services, setServices] = useState(JSON.parse(JSON.stringify(content.services)));
+  const [services, setServices] = useState([]);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState(emptyService);
   const [saving, setSaving] = useState(false);
   const [showIconPicker, setShowIconPicker] = useState(false);
   const [iconSearch, setIconSearch] = useState('');
+
+  useEffect(() => {
+    setServices(JSON.parse(JSON.stringify(content.services || [])));
+  }, [content]);
 
   const openEdit = (s) => { setForm({ ...s }); setEditing(s.id); };
   const openNew = () => { setForm({ ...emptyService, id: Date.now() }); setEditing('new'); };

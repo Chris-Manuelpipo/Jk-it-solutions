@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCMS } from '../../context/CMSContext';
 import { createFormation, updateFormation, deleteFormation } from '../../api/strapiAdmin';
 import ImageUrlField from './ImageUrlField';
@@ -8,10 +8,14 @@ const levelColor = { 'Débutant': '#22c55e', 'Intermédiaire': '#f59e0b', 'Avanc
 
 export default function AdminFormations({ onSave }) {
   const { content, refreshContent } = useCMS();
-  const [formations, setFormations] = useState(JSON.parse(JSON.stringify(content.formations)));
+  const [formations, setFormations] = useState([]);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState(emptyFormation);
   const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    setFormations(JSON.parse(JSON.stringify(content.formations || [])));
+  }, [content]);
 
   const openNew = () => { setForm({ ...emptyFormation, id: Date.now() }); setEditing('new'); };
   const openEdit = (f) => { setForm({ ...f, imageFile: null }); setEditing(f.id); };
