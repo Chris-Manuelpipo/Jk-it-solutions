@@ -61,6 +61,7 @@ export default function AdminPacks({ onSave }) {
         if (!confirm('Supprimer ce pack ?')) return;
         try { 
             await deletePack(p); 
+            setPacks(prev => prev.filter(pack => pack.id !== p.id));
             await refreshContent(); 
             onSave('Pack supprimé.'); 
         }
@@ -68,6 +69,7 @@ export default function AdminPacks({ onSave }) {
     };
 
     const toggleActive = async (p) => {
+        console.log('toggleActive called with:', p);
         try {
             await updatePack(p, { active: !p.active });
             await refreshContent();
@@ -159,11 +161,20 @@ export default function AdminPacks({ onSave }) {
         );
     }
 
+    const isMaxed = packs.length >= MAX_PACKS;
+    
     return (
         <div className="admin-card">
             <div className="admin-card-header">
                 <h2><i className="fas fa-tags" /> Packs & Offres ({packs.length}/{MAX_PACKS})</h2>
-                <button className="btn-admin-save" onClick={openNew} disabled={packs.length >= MAX_PACKS}><i className="fas fa-plus" /> Ajouter</button>
+                                <button
+                    className="btn-admin-save"
+                    onClick={openNew}
+                    disabled={isMaxed}
+                    style={isMaxed ? { background: '#cbd5e1', color: '#475569', borderColor: '#94a3b8', cursor: 'not-allowed' } : undefined}
+                >
+                    {isMaxed ? 'Pas plus de 3 Packs' : <><i className="fas fa-plus" /> Ajouter</>}
+                </button>
             </div>
             <div className="admin-list">
                 {packs.map(p => {
