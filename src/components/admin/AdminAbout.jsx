@@ -197,7 +197,7 @@ export default function AdminAbout({ onSave }) {
           </button>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }} className="admin-stats-grid">
-          {about.stats.map((stat, i) => (
+          {(about.stats || []).map((stat, i) => (
             <div key={i} style={{ background: 'var(--light)', borderRadius: 'var(--radius)', padding: '1rem' }}>
               <div className="admin-field" style={{ marginBottom: '0.5rem' }}>
                 <label>Label</label>
