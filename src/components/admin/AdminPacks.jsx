@@ -162,7 +162,7 @@ export default function AdminPacks({ onSave }) {
     }
 
     const isMaxed = packs.length >= MAX_PACKS;
-    
+
     return (
         <div className="admin-card">
             <div className="admin-card-header">
@@ -193,8 +193,7 @@ export default function AdminPacks({ onSave }) {
                                     {p.expiresAt && <span style={{ fontSize: '0.75rem', color: '#f59e0b' }}><i className="fas fa-clock" /> {p.expiresAt}</span>}
                                 </span>
                             </div>
-                            <div className="admin-list-item-actions">
-                                <button onClick={() => toggleActive(p)} title={p.active ? 'Masquer' : 'Afficher'} style={{ padding: '0.45rem 0.7rem', fontSize: '0.8rem', borderRadius: 'var(--radius)', border: '1.5px solid var(--gray-light)', background: 'white', cursor: 'pointer', color: p.active ? '#22c55e' : 'var(--gray)' }}><i className={`fas ${p.active ? 'fa-eye' : 'fa-eye-slash'}`} /></button>
+                            <div className="admin-list-item-actions"> 
                                 <button className="btn-admin-save" style={{ padding: '0.45rem 0.9rem', fontSize: '0.8rem' }} onClick={() => openEdit(p)}><i className="fas fa-pen" /></button>
                                 <button className="btn-admin-danger" onClick={() => handleDelete(p)}><i className="fas fa-trash" /></button>
                             </div>
