@@ -108,6 +108,7 @@ export default function AdminFormations({ onSave }) {
               label="Image"
               value={form.image}
               onChange={handleImageUrl}
+              onFileChange={handleImageFile}
             />
           </div>
           {form.image && <img src={form.image} alt="" className="img-preview" style={{ maxHeight: 160, borderRadius: 'var(--radius)' }} />}

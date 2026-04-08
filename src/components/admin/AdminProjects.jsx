@@ -108,6 +108,7 @@ export default function AdminProjects({ onSave }) {
                         label="Image"
                         value={form.image}
                         onChange={handleImageUrl}
+                        onFileChange={handleImageFile}
                     />
                     <div style={{ display: 'flex', gap: '0.75rem', paddingTop: '0.5rem' }}>
                         <button className="btn-admin-save" onClick={handleSave} disabled={saving}>

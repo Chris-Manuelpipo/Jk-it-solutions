@@ -1,11 +1,22 @@
 import { useState } from 'react';
 import ImagePickerModal from './ImagePickerModal';
 
-export default function ImageUrlField({ label, value, onChange, preview = true }) {
+export default function ImageUrlField({ label, value, onChange, onFileChange, preview = true }) {
   const [showPicker, setShowPicker] = useState(false);
 
   const handleSelect = (url) => {
     onChange(url);
+  };
+
+  const handleFileChange = (e) => {
+    if (e.target.files[0]) {
+      const file = e.target.files[0];
+      const previewUrl = URL.createObjectURL(file);
+      onChange(previewUrl);
+      if (onFileChange) {
+        onFileChange(file);
+      }
+    }
   };
 
   return (
@@ -46,11 +57,7 @@ export default function ImageUrlField({ label, value, onChange, preview = true }
             type="file"
             accept="image/*"
             style={{ display: 'none' }}
-            onChange={e => {
-              if (e.target.files[0]) {
-                onChange(URL.createObjectURL(e.target.files[0]));
-              }
-            }}
+            onChange={handleFileChange}
           />
         </label>
       </div>

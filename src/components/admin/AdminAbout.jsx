@@ -27,6 +27,7 @@ export default function AdminAbout({ onSave }) {
     const stats = about.stats.map((s, idx) => idx === i ? { ...s, [field]: field === 'value' ? Number(value) : value } : s);
     setAbout(p => ({ ...p, stats }));
   };
+  const handleAboutImageFile = (file) => setAbout(p => ({ ...p, image: URL.createObjectURL(file), imageFile: file }));
 
   const handleSaveAbout = async () => {
     setSavingAbout(true);
@@ -130,6 +131,7 @@ export default function AdminAbout({ onSave }) {
             <ImageUrlField
               value={memberForm.image}
               onChange={handleMemberImageUrl}
+              onFileChange={handleMemberImageFile}
               preview={false}
             />
             {memberForm.image && (
@@ -185,6 +187,7 @@ export default function AdminAbout({ onSave }) {
             label="Image"
             value={about.image}
             onChange={v => setAbout(p => ({ ...p, image: v, imageFile: null }))}
+            onFileChange={handleAboutImageFile}
           />
         </div>
       </div>

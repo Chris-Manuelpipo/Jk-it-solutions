@@ -139,6 +139,7 @@ export default function AdminHero({ onSave }) {
               label="Image de fond"
               value={slide.image}
               onChange={v => handleImageUrlChange(activeSlide, v)}
+              onFileChange={file => handleImageFileChange(activeSlide, file)}
             />
 
             <div className="admin-field">
