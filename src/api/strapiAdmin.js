@@ -88,7 +88,6 @@ export async function createHeroSlide(data, imageFile) {
 export async function updateHeroSlide(documentId, data, imageFile) {
   return updateEntry('hero-slides', documentId, documentId, data, imageFile);
 }
-
 export async function deleteHeroSlide(id) {
   return deleteEntry('hero-slides', id, id);
 }
@@ -111,35 +110,85 @@ export async function updateAbout(item, data, imageFile) {
   });
 }
 
-// Services
+// ─── Services ────────────────────────────────────────────────────────
+// Nouveaux champs : longDescription, features, benefits, process,
+//                   stats, tags, highlights
 export async function getServices() {
   return fetchStrapi('services?sort[0]=order:asc&populate=*');
 }
+
 export async function createService(data) {
-  return createEntry('services', data);
+  const payload = _buildServicePayload(data);
+  return createEntry('services', payload);
 }
+
 export async function updateService(item, data) {
-  return updateEntry('services', item.id, item.documentId, data);
+  const payload = _buildServicePayload(data);
+  return updateEntry('services', item.id, item.documentId, payload);
 }
+
 export async function deleteService(item) {
   return deleteEntry('services', item.id, item.documentId);
 }
 
-// Formations
+function _buildServicePayload(data) {
+  return {
+    title:           data.title,
+    description:     data.description,
+    icon:            data.icon,
+    active:          data.active ?? true,
+    // ── champs détail modale ──
+    longDescription: data.longDescription  || '',
+    features:        _jsonField(data.features),
+    benefits:        _jsonField(data.benefits),
+    process:         _jsonField(data.process),
+    stats:           _jsonField(data.stats),
+    tags:            _jsonField(data.tags),
+    highlights:      _jsonField(data.highlights),
+  };
+}
+
+// ─── Formations ──────────────────────────────────────────────────────
+// Nouveaux champs : objectives, program, prerequisites,
+//                   maxParticipants, nextSession, instructor
 export async function getFormations() {
   return fetchStrapi('formations?sort[0]=order:asc&populate=*');
 }
-export async function createFormation(data, imageFile) {
-  return createEntry('formations', data, imageFile);
+
+export async function createFormation(data, imageFile = null) {
+  const payload = _buildFormationPayload(data);
+  return createEntry('formations', payload, imageFile);
 }
-export async function updateFormation(item, data, imageFile) {
-  return updateEntry('formations', item.id, item.documentId, data, imageFile);
+
+export async function updateFormation(item, data, imageFile = null) {
+  const payload = _buildFormationPayload(data);
+  return updateEntry('formations', item.id, item.documentId, payload, imageFile);
 }
+
 export async function deleteFormation(item) {
   return deleteEntry('formations', item.id, item.documentId);
 }
 
-// Packs
+function _buildFormationPayload(data) {
+  return {
+    title:           data.title,
+    description:     data.description,
+    duration:        data.duration        || '',
+    price:           data.price           || '',
+    date:            data.date            || '',
+    level:           data.level           || 'Débutant',
+    image_url:       data.image_url       || data.image || '',
+    // ── champs détail modale ──
+    maxParticipants: Number(data.maxParticipants) || 15,
+    nextSession:     data.nextSession     || '',
+    objectives:      _jsonField(data.objectives),
+    program:         _jsonField(data.program),
+    prerequisites:   _jsonField(data.prerequisites),
+    instructor:      _jsonField(data.instructor),
+  };
+}
+
+// ─── Packs ───────────────────────────────────────────────────────────
 export async function getPacks() {
   return fetchStrapi('packs?sort[0]=order:asc&populate=*');
 }
@@ -153,7 +202,7 @@ export async function deletePack(item) {
   return deleteEntry('packs', item.id, item.documentId);
 }
 
-// Projects
+// ─── Projects ────────────────────────────────────────────────────────
 export async function getProjects() {
   return fetchStrapi('projects?sort[0]=order:asc&populate=*');
 }
@@ -167,7 +216,7 @@ export async function deleteProject(item) {
   return deleteEntry('projects', item.id, item.documentId);
 }
 
-// Testimonials
+// ─── Testimonials ────────────────────────────────────────────────────
 export async function getTestimonials() {
   return fetchStrapi('testimonials?sort[0]=order:asc&populate=*');
 }
@@ -181,7 +230,7 @@ export async function deleteTestimonial(item) {
   return deleteEntry('testimonials', item.id, item.documentId);
 }
 
-// Team Members
+// ─── Team Members ────────────────────────────────────────────────────
 export async function getTeamMembers() {
   return fetchStrapi('team-members?sort[0]=order:asc&populate=*');
 }
@@ -195,7 +244,7 @@ export async function deleteTeamMember(item) {
   return deleteEntry('team-members', item.id, item.documentId);
 }
 
-// Contact Info (Single Type)
+// ─── Contact Info (Single Type) ──────────────────────────────────────
 export async function getContactInfo() {
   const data = await fetchStrapi('contact-info?populate=*');
   return data?.data || data;
@@ -208,7 +257,7 @@ export async function updateContactInfo(data) {
   });
 }
 
-// Site Config (Single Type)
+// ─── Site Config (Single Type) ───────────────────────────────────────
 export async function getSiteConfig() {
   const data = await fetchStrapi('site-config?populate=*');
   return data?.data || data;
@@ -224,4 +273,11 @@ export async function updateSiteConfig(data, logoFile) {
     body: { data: finalPayload },
     token: getStrapiToken(),
   });
+}
+
+
+function _jsonField(value) {
+  if (value === null || value === undefined) return null;
+  if (typeof value === 'string') return value;
+  return JSON.stringify(value);
 }
