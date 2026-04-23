@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useCMS } from '../context/CMSContext';
 import PageHeader from '../components/ui/PageHeader';
 import CTABanner from '../components/sections/CTABanner';
@@ -34,6 +35,7 @@ const accentFor = (icon = '') => {
 export default function Services() {
   const { content } = useCMS();
   const { services } = content;
+  const navigate = useNavigate();
   const [selected, setSelected] = useState(null);
   const [activeTab, setActiveTab] = useState(0);
   const overlayRef = useRef(null);
@@ -281,15 +283,14 @@ export default function Services() {
 
               {/* CTA */}
               <div className="sm-left-cta">
-                <a
-                  href={`/contact?service=${encodeURIComponent(selected.title)}`}
+                <button
                   className="sm-cta-primary"
                   style={{ background: `linear-gradient(135deg, ${acc.from}, ${acc.to})`, boxShadow: `0 6px 24px ${acc.from}55` }}
-                  onClick={e => e.stopPropagation()}
+                  onClick={e => { e.stopPropagation(); closeModal(); navigate(`/contact?service=${encodeURIComponent(selected.title)}`); }}
                 >
                   <i className="fas fa-paper-plane" />
                   Demander un devis
-                </a>
+                </button>
                 <a
                   href={`https://wa.me/237690000000?text=Bonjour, je souhaite en savoir plus sur votre service : ${encodeURIComponent(selected.title)}`}
                   target="_blank" rel="noreferrer"
@@ -347,14 +348,13 @@ export default function Services() {
                 </div>
                 <div className="sm-footer-actions">
                   <button className="sm-footer-close" onClick={closeModal}>Fermer</button>
-                  <a
-                    href="/contact"
+                  <button
                     className="sm-footer-cta"
                     style={{ background: `linear-gradient(135deg, ${acc.from}, ${acc.to})` }}
-                    onClick={e => e.stopPropagation()}
+                    onClick={() => { closeModal(); navigate('/contact'); }}
                   >
                     <i className="fas fa-arrow-right" /> Nous contacter
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
