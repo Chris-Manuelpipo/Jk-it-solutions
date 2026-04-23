@@ -1,4 +1,4 @@
-// src/api/strapi.js
+ //src/api/strapi.js
 
 const STRAPI_URL = import.meta.env.VITE_STRAPI_URL || 'http://localhost:1337';
 
