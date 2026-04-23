@@ -1,3 +1,48 @@
+/* ===== FILTER TABS ===== */
+
+.formation-filters {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+  background: #f4f7f5;
+  padding: 0.4rem;
+  border-radius: 50px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1.5px solid #e2ece7;
+}
+
+.filter-btn {
+  padding: 0.55rem 1.4rem;
+  border-radius: 50px;
+  border: none;
+  background: transparent;
+  color: #6b7c74;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-body, inherit);
+  transition: all 0.22s ease;
+  white-space: nowrap;
+  position: relative;
+}
+
+.filter-btn:hover {
+  color: var(--primary, #1a7a3c);
+  background: rgba(26, 122, 60, 0.07);
+}
+
+.filter-btn.active {
+  background: var(--primary, #1a7a3c);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(26, 122, 60, 0.3);
+  font-weight: 700;
+}
+
 /* ===== EXISTING STYLES (unchanged) ===== */
 
 /* --- Grille et Cards --- */

@@ -60,7 +60,10 @@ export async function updateEntry(collection, id, documentId, payload, imageFile
     finalPayload.image_file = uploaded.id;
   }
 
-  const key = documentId || id;
+  // Utilise PRIORITAIREMENT le documentId (le code alpha-numérique)
+  const key = documentId || id; 
+  console.log(`Tentative de mise à jour sur : ${collection}/${key}`);
+
   return fetchStrapi(`${collection}/${key}`, {
     method: 'PUT',
     body: { data: finalPayload },
